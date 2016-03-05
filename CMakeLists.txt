@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4.3)
-project(CProject)
+project(CProject CXX)
 
 set(GTEST_LIBRARY "lib/gtest_main.a")
 
@@ -9,9 +9,9 @@ enable_testing()
 include_directories("include/")
 include_directories("include/gtest")
 
-# Unit Testing with GTES# Unit Testing with GTESTT
+# Unit Testing with GTES# Unit Testing with GTEST
 
-add_executable(runUnitTests tests/example.cpp tests/tests_main.cpp) 
+add_executable(runUnitTests tests/directory_test.cpp src/Directory.cpp tests/example.cpp tests/tests_main.cpp) 
 target_link_libraries(runUnitTests ${CMAKE_SOURCE_DIR}/${GTEST_LIBRARY})
 target_link_libraries(runUnitTests pthread)
 
@@ -20,4 +20,5 @@ add_test(
 	COMMAND runUnitTests
 )
 
-	#add_executable(CProject "")
+add_executable(CProject src/Directory.cpp src/main.cpp)
+set_target_properties(CProject PROPERTIES LINKER_LANGUAGE CXX)
