@@ -8,7 +8,7 @@ namespace cproject
 		mode_t mask = umask(0);
 		umask(mask);
 
-		if(mkdir(name.c_str(), (0777 & ~mask) ) != 0)
+		if(mkdir(name.c_str(), mode & (0777 & ~mask) ) != 0)
 			exit(EXIT_FAILURE);
 
 	}
