@@ -1,8 +1,12 @@
+//#ifndef DIRECTORY_HPP_
+//#define DIRECTORY_HPP_
 #pragma once
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <iostream>
+#include <unistd.h>
 
 namespace cproject
 {
@@ -28,6 +32,12 @@ namespace cproject
 	class Directory 
 	{
 		public:
+			Directory(const Directory& dir) {};
+			Directory() {};
+
 			void Create(const std::string& name, Permission create_permission);
+			void CreateFile(const std::string&name, Permission mode);
+			void CreateBase(const std::string& name, Permission perm);
 	};
 }
+//#endif

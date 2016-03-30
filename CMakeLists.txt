@@ -11,14 +11,14 @@ include_directories("include/gtest")
 
 # Unit Testing with GTES# Unit Testing with GTEST
 
-add_executable(runUnitTests tests/directory_test.cpp src/Directory.cpp tests/example.cpp tests/tests_main.cpp) 
+add_executable(runUnitTests tests/directory_test.cpp src/Directory.cpp tests/example.cpp tests/tests_main.cpp src/CMakeExecutable.cpp src/CMakeFile src/YcmFile.cpp tests/cmake_file_test.cpp tests/YcmFile_test.cpp ) 
 target_link_libraries(runUnitTests ${CMAKE_SOURCE_DIR}/${GTEST_LIBRARY})
 target_link_libraries(runUnitTests pthread)
 
 add_test(
-	NAME runUnitTests
-	COMMAND runUnitTests
+       NAME runUnitTests
+       COMMAND runUnitTests
 )
 
-add_executable(CProject src/Directory.cpp src/main.cpp)
+add_executable(CProject src/Directory.cpp src/main.cpp src/YcmFile.cpp src/CMakeExecutable.cpp src/CMakeFile)
 set_target_properties(CProject PROPERTIES LINKER_LANGUAGE CXX)
