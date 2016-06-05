@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -g")
 enable_testing()
 include_directories("include/")
 include_directories("include/gtest")
+include_directories("/usr/include/boost")
 
 # Unit Testing with GTES# Unit Testing with GTEST
 
@@ -21,4 +22,5 @@ add_test(
 )
 
 add_executable(CProject src/Directory.cpp src/main.cpp src/YcmFile.cpp src/CMakeExecutable.cpp src/CMakeFile)
+target_link_libraries(CProject boost_program_options)
 set_target_properties(CProject PROPERTIES LINKER_LANGUAGE CXX)
