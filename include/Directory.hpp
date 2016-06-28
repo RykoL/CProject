@@ -11,6 +11,9 @@
 namespace cproject
 {
 
+	/*
+	 * Enumeration that maps the file creation masks on unix systems
+	 */
 	enum Permission
 	{
 		kUserWrite = S_IWUSR,
@@ -29,15 +32,37 @@ namespace cproject
 		return static_cast<Permission>( static_cast<int>(a) | static_cast<int>(b));
 	}
 
+	/*
+	 * Class that handles directory/file creation in a safer environment
+	 */
 	class Directory 
 	{
 		public:
-			Directory(const Directory& dir) {};
-			Directory() {};
-
+			/*
+			 * Creates a directory with specified permissions. 
+			 * const std::string& name : Name of the directory to be created , can`t be null or
+			 * empty.
+			 * Permission perm : File creating mask of the directory to be created.
+			 */
 			void Create(const std::string& name, Permission create_permission);
+			
+			
+			/* Creates a file in the current working directory with given permissions
+			 * const std::string& name : Name of the file to be created , can`t be null or
+			 * empty.
+			 * Permission perm : File creating mask of the file to be created.
+			 */
 			void CreateFile(const std::string&name, Permission mode);
-			void CreateBase(const std::string& name, Permission perm);
+
+
+			/*
+			 * Creates a directory with specified permissions and changes the working directory
+			 * to the newly created directory.
+			 * const std::string& name : Name of the directory to be created , can`t be null or
+			 * empty,
+			 * Permission perm : File creating mask of the directory to be created,
+			 */
+			 void CreateBase(const std::string& name, Permission perm);
 	};
 }
 //#endif
