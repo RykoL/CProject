@@ -2,18 +2,19 @@
 
 namespace cproject
 {
-	void Directory::Create(const std::string& name, Permission mode)
+	void Directory::Create(const std::string& name, Permission perm)
 	{
-		//set the file creation mask
-		mode_t mask = umask(0);
-		umask(mask);
+		if(name != "") {
+			mode_t mask = umask(0);
+			umask(mask);
 
-		if(mkdir(name.c_str(), mode & (0777 & ~mask) ) != 0)
-			exit(EXIT_FAILURE);
+			if(mkdir(name.c_str(), perm & (0777 & ~mask) ) != 0)
+				exit(EXIT_FAILURE);
+		}
 
 	}
 
-	void Directory::CreateFile(const std::string& path, Permission mode)
+	void Directory::CreateFile(const std::string& path, Permission perm)
 	{
 		FILE* file = nullptr;
 

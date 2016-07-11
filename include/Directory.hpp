@@ -33,6 +33,12 @@ namespace cproject
 	}
 
 	/*
+	 * Constant that defines the default Unix file creation mask
+	 */
+	const Permission kDefaultPermission = Permission::kUserRead | Permission::kUserWrite | Permission::kUserExecute |
+					Permission::kGroupWrite | Permission::kGroupRead | Permission::kGroupExecute | Permission::kOthersExecute;
+
+	/*
 	 * Class that handles directory/file creation in a safer environment
 	 */
 	class Directory 
@@ -44,10 +50,11 @@ namespace cproject
 			 * empty.
 			 * Permission perm : File creating mask of the directory to be created.
 			 */
-			void Create(const std::string& name, Permission create_permission);
+			void Create(const std::string& name = "", Permission createPermission = kDefaultPermission); 
 			
 			
-			/* Creates a file in the current working directory with given permissions
+			/* 
+			 * Creates a file in the current working directory with given permissions
 			 * const std::string& name : Name of the file to be created , can`t be null or
 			 * empty.
 			 * Permission perm : File creating mask of the file to be created.
@@ -62,7 +69,7 @@ namespace cproject
 			 * empty,
 			 * Permission perm : File creating mask of the directory to be created,
 			 */
-			 void CreateBase(const std::string& name, Permission perm);
+			 void CreateBase(const std::string& name, Permission createPermission = kDefaultPermission);
 	};
 }
 //#endif
