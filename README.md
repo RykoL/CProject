@@ -10,5 +10,5 @@ To build CProject you'll need
 ### Linux
 ```` sh
 cmake .
-make install #might require 
+make install #might require root
 ````
