@@ -14,13 +14,6 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 int main(int argc, char*argv[])
 {
 	cproject::Directory d;
-	//cproject::CMakeFile cm;
-	//d.CreateBase(argv[0], cproject::Permission::kUserRead | cproject::Permission::kUserWrite | cproject::Permission::kUserExecute);
-	//d.Create("src", cproject::Permission::kUserRead |cproject::Permission::kUserWrite | cproject::Permission::kUserExecute);
-	//d.Create("include", cproject::Permission::kUserRead |cproject::Permission::kUserWrite | cproject::Permission::kUserExecute);
-
-	//std::std::cout<< get_current_dir_name() << std::endl;
-	//std::std::cout // Declare the supported options.
 	
 	try 
 	{
@@ -29,26 +22,56 @@ int main(int argc, char*argv[])
 			("help", "print out this message")
 			("name", po::value<std::string>()->required(), "name of the project")
 			("add-cmake" , "specifies if a CMakeLists.txt should be created")
-			("directories",po::value< std::vector<std::string> >() , "specifies the directories to be created")
-			("include-directories", po::value<std::vector<std::string > >(),"add include directories to the CMakeLists.txt")
-			("libs", po::value<std::vector<std::string > >(),"add a library to the CMakeLists.txt file");
+			("directories,d",po::value< std::vector<std::string> >()->multitoken() , "specifies the directories to be created")
+			("include-directories,i", po::value<std::vector<std::string > >()->multitoken(),"add include directories to the CMakeLists.txt")
+			("libs,l", po::value<std::vector<std::string > >(),"add a library to the CMakeLists.txt file");
 
 		po::positional_options_description p;
-		p.add("directories",-1);
 		p.add("name", 1);
 
 		po::variables_map vm;
 		po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(),vm);
 		po::notify(vm);
 
-		if(vm.count("name"))
+		if(vm.count("help"))
 		{
-			d.CreateBase(vm["name"].as<std::string>());
+			// Print out the help message
+			std::cout<< desc << std::endl;
 		}
+		// We dont wanna create a base directorie if were searching for help
+		else {
+			if(vm.count("name")) //Works as intended , not ! 
+			{
+				d.CreateBase(vm["name"].as<std::string>());
+			}
 
-		if(vm.count("directories"))
-		{
-			std::cout<< vm["directories"].as<std::vector<std::string>>();
+			d.CreateFile("main.cpp", cproject::kDefaultPermission);
+
+			if(vm.count("directories"))
+			{
+				//Only recognizing 1 argument now ?
+				auto dirs = vm["directories"].as<std::vector<std::string>>();
+				for(auto dir : dirs)
+					d.Create(dir);
+			}
+			// Handles the logic in case the user specified to create a CMakeFile
+			if(vm.count("add-cmake")) //Suddenly works
+			{
+				cproject::CMakeFile cmakef(vm["name"].as<std::string>(),"2.8",vm["name"].as<std::string>());
+
+				// Check if the user has provided additional include directories
+				if(vm.count("include-directories"))
+				{
+					cmakef.IncludeDirectories(vm["include-directories"].as<std::vector<std::string>>());
+				}
+
+				// Check if the user has provided additional libs to include in the compilation process
+				if(vm.count("libs"))
+				{
+					// TODO: Add support for libraries
+				}
+				cmakef.WriteToFile();
+			}
 		}
 	}
 	catch(const std::exception &e)
