@@ -2,6 +2,13 @@
 
 namespace cproject
 {
+
+	CMakeFile::CMakeFile(const std::string& projectName, const std::string& minVersion , const std::string& executableName)
+		: _name{projectName} , _min_version{minVersion}, mainExecutable(executableName, {})
+	{
+		_writer.open("./CMakeLists.txt");
+	}
+
 	void CMakeFile::SetExecutable(const CMakeExecutable& exec)
 	{
 		this->_executables.push_back(exec);
@@ -24,29 +31,41 @@ namespace cproject
 
 	void CMakeFile::WriteToFile()
 	{
-		//NOTE: Maybe we'll need it later
+		WriteHeader();
+		WriteIncludeDirectories();
+		WriteLibraries();
+		WriteExecutables();
 	}
 
 	void CMakeFile::WriteExecutables()
 	{
 
-		for(auto exec : _executables) //Iterate trough all executables of the projects
+		_writer << "add_executable(" << mainExecutable.GetName() << " " << mainExecutable.GetFilesToCompileAsString() << " main.cpp )\n\n";
+
+		//TODO: Dont forget to handle the main executable before checking for other executables to write to the file
+		if(_executables.size() > 0)
 		{
-			_writer  << "add_executable(" << exec.GetName() << " " << exec.GetFilesToCompileAsString() << ")" <<std::endl;
+			for(auto exec : _executables) //Iterate trough all executables of the projects
+			{
+				_writer  << "add_executable(" << exec.GetName() << " " << exec.GetFilesToCompileAsString() << ")\n"; 
+			}
 		}
 
 	}
 
 	void CMakeFile::WriteIncludeDirectories()
 	{
-		_writer<< "include_directories(";
-
-		for(std::string dir : _directories)
+		if(_directories.size() > 0)
 		{
-			_writer << dir << " ";
-		}
+			_writer<< "include_directories(";
 
-		_writer << ")" << std::endl;
+			for(std::string dir : _directories)
+			{
+				_writer << dir << " ";
+			}
+
+			_writer << ")\n\n";
+		}
 	}
 
 	void CMakeFile::WriteHeader()
@@ -55,23 +74,26 @@ namespace cproject
 			return;
 
 		_writer<< "cmake_minimum_required(VERSION "<< _min_version << ")\n"
-		<< "project(" << _name << ")" << std::endl;  	
+		<< "project(" << _name << ")\n\n"; 
 	}
 
 	void CMakeFile::WriteLibraries()
 	{
 		//A library is associated with a target/executable
 
-		for(auto exec : _executables) //Iterate trough all executables of the projects
+		if(_executables.size() > 0)
 		{
-			_writer  << "target_link_libraries(" << exec.GetName() << " "; 
-			
-			for(std::string lib : exec.GetLibraries())
+			for(auto exec : _executables) //Iterate trough all executables of the projects
 			{
-				_writer << lib << " ";
-			}
+				_writer  << "target_link_libraries(" << exec.GetName() << " "; 
+				
+				for(std::string lib : exec.GetLibraries())
+				{
+					_writer << lib << " ";
+				}
 
-			_writer << ")" << std::endl;
+				_writer << ")\n"; 
+			}
 		}
 	}
 }

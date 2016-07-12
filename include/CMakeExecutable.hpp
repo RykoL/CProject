@@ -10,6 +10,9 @@ namespace cproject
 	class CMakeExecutable
 	{
 		public:
+			CMakeExecutable() {};
+			CMakeExecutable(const std::string& name, const std::vector<std::string> &files);
+
 			void SetName(const std::string& name) {_name = name;};
 			std::string GetName() const {return _name;};
 
@@ -23,7 +26,6 @@ namespace cproject
 			void AddLibraries(const std::vector<std::string> libs) { _libraries.insert(_libraries.begin(), libs.begin(),libs.end());};
 
 			std::vector<std::string> GetLibraries() const { return _libraries;};
-			CMakeExecutable(const std::string& name, const std::vector<std::string> &files);
 
 		private:
 			std::string _name;
