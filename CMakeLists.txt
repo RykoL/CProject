@@ -24,3 +24,5 @@ add_test(
 add_executable(CProject src/Directory.cpp src/main.cpp src/YcmFile.cpp src/CMakeExecutable.cpp src/CMakeFile)
 target_link_libraries(CProject boost_program_options)
 set_target_properties(CProject PROPERTIES LINKER_LANGUAGE CXX)
+
+install(TARGETS CProject DESTINATION /usr/bin/)
