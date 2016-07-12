@@ -22,16 +22,9 @@ namespace cproject
 			std::vector<std::string> GetFilesToCompile() const {return files_to_compile;};
 			std::string GetFilesToCompileAsString();
 
-			void AddLibrary(const std::string& lib) {_libraries.push_back(lib);};
-			void AddLibraries(const std::vector<std::string> libs) { _libraries.insert(_libraries.begin(), libs.begin(),libs.end());};
-
-			std::vector<std::string> GetLibraries() const { return _libraries;};
-
 		private:
 			std::string _name;
 			std::vector<std::string> files_to_compile;
-			std::vector<std::string> _libraries;
-
 	};
 
 

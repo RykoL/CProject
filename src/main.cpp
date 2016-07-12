@@ -24,7 +24,7 @@ int main(int argc, char*argv[])
 			("add-cmake" , "specifies if a CMakeLists.txt should be created")
 			("directories,d",po::value< std::vector<std::string> >()->multitoken() , "specifies the directories to be created")
 			("include-directories,i", po::value<std::vector<std::string > >()->multitoken(),"add include directories to the CMakeLists.txt")
-			("libs,l", po::value<std::vector<std::string > >(),"add a library to the CMakeLists.txt file");
+			("libs,l", po::value<std::vector<std::string > >()->multitoken(),"add a library to the CMakeLists.txt file");
 
 		po::positional_options_description p;
 		p.add("name", 1);
@@ -68,7 +68,7 @@ int main(int argc, char*argv[])
 				// Check if the user has provided additional libs to include in the compilation process
 				if(vm.count("libs"))
 				{
-					// TODO: Add support for libraries
+					cmakef.AddLibraries(vm["libs"].as<std::vector<std::string>>());
 				}
 				cmakef.WriteToFile();
 			}

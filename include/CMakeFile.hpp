@@ -62,6 +62,16 @@ namespace cproject
 			void IncludeDirectories(const std::vector<std::string> &dirs) {_directories.insert(_directories.begin(),
 					dirs.begin(), dirs.end());};
 
+			/*
+			 * Adds additional libraries to the CMake file, via target_link_libraries()
+			 * const std::vector<std::string>& libraries : Libraries to be added.
+			 */
+
+			void AddLibraries(const std::vector<std::string>& libraries) {_libraries.insert(_libraries.begin(),
+					libraries.begin(), libraries.end());};
+
+			//TODO: static libraries !
+
 			void WriteToFile();
 			void WriteHeader();
 			void WriteLibraries();	
@@ -75,6 +85,7 @@ namespace cproject
 			CMakeExecutable mainExecutable;
 			std::vector<std::string> _flags;
 			std::vector<std::string> _directories;
+			std::vector<std::string> _libraries;
 			std::ofstream _writer;
 	};
 }

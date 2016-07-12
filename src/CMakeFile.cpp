@@ -33,8 +33,8 @@ namespace cproject
 	{
 		WriteHeader();
 		WriteIncludeDirectories();
-		WriteLibraries();
 		WriteExecutables();
+		WriteLibraries();
 	}
 
 	void CMakeFile::WriteExecutables()
@@ -81,19 +81,16 @@ namespace cproject
 	{
 		//A library is associated with a target/executable
 
-		if(_executables.size() > 0)
+		if(_libraries.size() > 0)
 		{
-			for(auto exec : _executables) //Iterate trough all executables of the projects
-			{
-				_writer  << "target_link_libraries(" << exec.GetName() << " "; 
-				
-				for(std::string lib : exec.GetLibraries())
-				{
-					_writer << lib << " ";
-				}
+			_writer << "target_link_libraries(" << mainExecutable.GetName() << " ";
 
-				_writer << ")\n"; 
+			for(auto lib : _libraries)
+			{
+				_writer << lib << " ";
 			}
+
+			_writer << ")\n\n";
 		}
 	}
 }

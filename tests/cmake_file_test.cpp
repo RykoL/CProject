@@ -20,6 +20,7 @@ TEST(CMakeFileTest, WriteHeader)
 	f.close();
 }
 
+/*
 TEST(CMakeFileTest, WriteLibraries)
 {
 	cproject::CMakeFile cm("Cmake_test.txt");
@@ -37,6 +38,7 @@ TEST(CMakeFileTest, WriteLibraries)
 
 	f.close();
 }
+*/
 
 TEST(CMakeFileTest, IncludeDirectory)
 {
