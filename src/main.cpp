@@ -24,6 +24,7 @@ int main(int argc, char*argv[])
 			("add-cmake" , "specifies if a CMakeLists.txt should be created")
 			("directories,d",po::value< std::vector<std::string> >()->multitoken() , "specifies the directories to be created")
 			("include-directories,i", po::value<std::vector<std::string > >()->multitoken(),"add include directories to the CMakeLists.txt")
+			("flags,f" , po::value<std::vector<std::string>>()->multitoken(), "Add compiler flags to the CMakeLists.txt")
 			("libs,l", po::value<std::vector<std::string > >()->multitoken(),"add a library to the CMakeLists.txt file");
 
 		po::positional_options_description p;
@@ -55,7 +56,7 @@ int main(int argc, char*argv[])
 					d.Create(dir);
 			}
 			// Handles the logic in case the user specified to create a CMakeFile
-			if(vm.count("add-cmake")) //Suddenly works
+			if(vm.count("add-cmake")) 
 			{
 				cproject::CMakeFile cmakef(vm["name"].as<std::string>(),"2.8",vm["name"].as<std::string>());
 
@@ -69,6 +70,10 @@ int main(int argc, char*argv[])
 				if(vm.count("libs"))
 				{
 					cmakef.AddLibraries(vm["libs"].as<std::vector<std::string>>());
+				}
+				if(vm.count("flags"))
+				{
+					cmakef.AddCompilerFlags(vm["flags"].as<std::vector<std::string>>());
 				}
 				cmakef.WriteToFile();
 			}

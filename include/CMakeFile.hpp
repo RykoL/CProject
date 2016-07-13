@@ -52,7 +52,7 @@ namespace cproject
 			 * Adds compiler flags to the CMake File
 			 * const std::vector<std::string>& flags : Flags to be added to the CMake File
 			 */
-			void AddCompilerFlags(const std::vector<std::string>& flags) {_flags.insert(_flags.begin(), flags.begin(), flags.end());};
+			void AddCompilerFlags(const std::vector<std::string>& flags);
 
 			/* 
 			 * Adds additional include directories to the CMake file. E.g boost headers
@@ -77,6 +77,7 @@ namespace cproject
 			void WriteLibraries();	
 			void WriteIncludeDirectories();
 			void WriteExecutables();
+			void WriteTargetFlags();
 
 		private:
 			std::string _name = "";

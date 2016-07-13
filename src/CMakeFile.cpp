@@ -19,6 +19,11 @@ namespace cproject
 		_executables.emplace_back(name, files);
 	}
 
+	void CMakeFile::AddCompilerFlags(const std::vector<std::string>& flags)
+	{
+		_flags.insert(_flags.begin(), flags.begin(), flags.end());
+	}
+
 	void CMakeFile::AddCompilerFlag(const std::string& flag)
 	{
 		auto temp_flag = flag;
@@ -35,6 +40,20 @@ namespace cproject
 		WriteIncludeDirectories();
 		WriteExecutables();
 		WriteLibraries();
+		WriteTargetFlags();
+	}
+
+	void CMakeFile::WriteTargetFlags()
+	{
+		_writer << "target_compile_options( " << mainExecutable.GetName() << " PRIVATE ";
+
+		for(auto flag : _flags)
+		{
+			flag.insert(flag.begin(), 1, '-');
+			_writer << flag << " ";
+		}
+
+		_writer << " )\n\n";
 	}
 
 	void CMakeFile::WriteExecutables()
